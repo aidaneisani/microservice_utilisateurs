@@ -1,0 +1,13 @@
+package com.gestionstock.microservice_utilisateur;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MicroserviceUtilisateurApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MicroserviceUtilisateurApplication.class, args);
+	}
+
+}
