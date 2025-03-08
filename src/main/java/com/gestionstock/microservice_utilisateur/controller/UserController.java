@@ -18,7 +18,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-   
+
 
     @GetMapping("/test")
     public String test() {
@@ -45,10 +45,17 @@ public class UserController {
     }
 
     // به‌روزرسانی کاربر
-//    @PutMapping("/{id}")
-//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-//        return ResponseEntity.ok(userService.updateUser(id, userDetails));
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+        try {
+            // فراخوانی متد updateUser از سرویس
+            User updatedUser = userService.updateUser(id, userDetails);
+            return ResponseEntity.ok(updatedUser);  // بازگرداندن کاربر به‌روزرسانی شده
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(null);  // اگر کاربر یافت نشد
+        }
+    }
+
 
     // حذف کاربر
 
