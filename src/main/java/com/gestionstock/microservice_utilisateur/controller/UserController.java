@@ -1,7 +1,6 @@
 package com.gestionstock.microservice_utilisateur.controller;
 
 import com.gestionstock.microservice_utilisateur.model.User;
-import com.gestionstock.microservice_utilisateur.repository.UserRepository;
 import com.gestionstock.microservice_utilisateur.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
