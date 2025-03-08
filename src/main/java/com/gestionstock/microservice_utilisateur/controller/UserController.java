@@ -5,7 +5,8 @@ import com.gestionstock.microservice_utilisateur.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
+
 
 import java.util.List;
 
@@ -22,13 +23,13 @@ public class UserController {
     public String test() {
         return "API is working!";
     }
+
     @PostMapping
-    public String createUser(@ModelAttribute User user) {
+    public ResponseEntity<String> createUser(@ModelAttribute User user) {
         userService.createUser(user);
-        return "add-user"; // بازگشت به صفحه‌ی add-user با پیام موفقیت
+        return ResponseEntity.ok("User added successfully!"); // بازگشت به صفحه‌ی add-user با پیام موفقیت
     }
 
-    // دریافت تمام کاربران
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
