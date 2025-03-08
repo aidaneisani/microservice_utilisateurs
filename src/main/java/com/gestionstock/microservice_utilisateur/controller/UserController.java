@@ -14,6 +14,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/test")
+    public String test() {
+        return "API is working!";
+    }
     // ایجاد کاربر جدید
     @PostMapping
     public User createUser(@RequestBody User user) {
