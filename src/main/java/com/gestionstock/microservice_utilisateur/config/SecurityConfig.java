@@ -1,6 +1,5 @@
 package com.gestionstock.microservice_utilisateur.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,18 +19,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())  // 🚨 CSRF رو غیرفعال کن تا `DELETE` کار کنه
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/test").permitAll() // اجازه‌ی دسترسی بدون احراز هویت
-                        .requestMatchers("/dashboard", "/add-user").hasRole("ADMIN") // فقط ADMIN می‌تونه به
-                        .anyRequest().authenticated() // بقیه درخواست‌ها نیاز به احراز هویت دارند
+                        .requestMatchers("/api/users/test").permitAll() // دسترسی عمومی به تست
+                        .requestMatchers("/dashboard", "/add-user").hasRole("ADMIN") // فقط ADMIN به داشبورد
+                        .requestMatchers("/api/users/**").hasRole("ADMIN") // 🚨 اضافه کردن دسترسی DELETE
+                        .anyRequest().authenticated() // سایر درخواست‌ها نیاز به احراز هویت دارند
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // صفحه‌ی لاگین
-                        .defaultSuccessUrl("/dashboard") // بعد از لاگین موفق، به /dashboard هدایت بشه
-                        .permitAll() // دسترسی عمومی به صفحه‌ی لاگین
-                )
-                .logout(logout -> logout
-                        .permitAll() // دسترسی عمومی به صفحه‌ی خروج
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard")
+                        .permitAll()
                 );
 
         return http.build();
@@ -41,8 +39,8 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode("admin123")) // رمز عبور هش شده
-                .roles("ADMIN")
+                .password(passwordEncoder().encode("admin123"))
+                .roles("ADMIN") // 🚨 دقت کن که اینجا `ROLE_ADMIN` ست شده
                 .build();
 
         return new InMemoryUserDetailsManager(admin);
@@ -50,6 +48,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // استفاده از BCryptPasswordEncoder
+        return new BCryptPasswordEncoder();
     }
 }

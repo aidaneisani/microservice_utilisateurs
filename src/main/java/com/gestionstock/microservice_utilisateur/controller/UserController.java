@@ -1,14 +1,16 @@
 package com.gestionstock.microservice_utilisateur.controller;
 
 import com.gestionstock.microservice_utilisateur.model.User;
+import com.gestionstock.microservice_utilisateur.repository.UserRepository;
 import com.gestionstock.microservice_utilisateur.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
+
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -16,8 +18,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-
+   
 
     @GetMapping("/test")
     public String test() {
@@ -50,9 +51,18 @@ public class UserController {
 //    }
 
     // حذف کاربر
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        Optional<User> user = userService.getUserById(id);  // از متد `getUserById` در سرویس استفاده کنید
+
+        if (user.isPresent()) {
+            userService.deleteUser(id);  // از متد `deleteUser` در سرویس استفاده کنید
+            return ResponseEntity.ok("User deleted successfully!");
+        } else {
+            return ResponseEntity.status(404).body("User not found!");
+        }
     }
+
+
 }
