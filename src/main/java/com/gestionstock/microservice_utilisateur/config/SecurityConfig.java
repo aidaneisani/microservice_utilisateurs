@@ -22,11 +22,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/test").permitAll() // اجازه‌ی دسترسی بدون احراز هویت
-                        .requestMatchers("/api/users/**").hasRole("ADMIN") // فقط ADMIN می‌تونه به API‌های کاربران دسترسی داشته باشه
+                        .requestMatchers("/dashboard").hasRole("ADMIN") // فقط ADMIN می‌تونه به
                         .anyRequest().authenticated() // بقیه درخواست‌ها نیاز به احراز هویت دارند
                 )
                 .formLogin(form -> form
                         .loginPage("/login") // صفحه‌ی لاگین
+                        .defaultSuccessUrl("/dashboard") // بعد از لاگین موفق، به /dashboard هدایت بشه
                         .permitAll() // دسترسی عمومی به صفحه‌ی لاگین
                 )
                 .logout(logout -> logout
