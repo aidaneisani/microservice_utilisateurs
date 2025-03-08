@@ -15,7 +15,7 @@ public class UserService {
 
     // ایجاد کاربر جدید
     public User createUser(User user) {
-        return userRepository.save(user);
+        return userRepository.save(user); // ذخیره کاربر جدید در دیتابیس
     }
 
     // دریافت تمام کاربران

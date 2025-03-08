@@ -51,7 +51,7 @@
             background-color: #c82333;
         }
         .section-title {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
             margin-top: 20px;
         }
@@ -61,7 +61,7 @@
             background-color: #f1f1f1;
             border-radius: 8px;
         }
-        .update-user-section input {
+        .update-user-section input, .add-user-section input {
             margin-bottom: 10px;
         }
     </style>
@@ -80,8 +80,12 @@
         </div>
 
         <!-- اضافه کردن کاربر -->
-        <div class="user-management-option">
-            <a href="/add-user" class="btn btn-primary">Add New User</a>
+        <div class="add-user-section">
+            <h4 class="section-title">Add New User</h4>
+            <input type="text" id="newUsername" class="form-control" placeholder="Username">
+            <input type="email" id="newEmail" class="form-control" placeholder="Email">
+            <input type="password" id="newPassword" class="form-control" placeholder="Password">
+            <button class="btn btn-primary" onclick="addUser()">Add User</button>
         </div>
 
         <!-- به‌روزرسانی کاربر -->
@@ -104,6 +108,40 @@
 </div>
 
 <script>
+    function addUser() {
+        let user = {
+            username: document.getElementById("newUsername").value,
+            email: document.getElementById("newEmail").value,
+            password: document.getElementById("newPassword").value,
+            // دیگر فیلدها بسته به نیاز شما
+        };
+
+        fetch("/api/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("User added successfully!");
+                    // می‌توانید اینجا فیلدها را خالی کنید
+                    document.getElementById("newUsername").value = "";
+                    document.getElementById("newEmail").value = "";
+                    document.getElementById("newPassword").value = "";
+                } else {
+                    alert("Failed to add user. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to add user. Please try again.");
+            });
+    }
+
+
+
     function updateUser() {
         let userId = document.getElementById("updateUserId").value;
         let username = document.getElementById("updateUsername").value;

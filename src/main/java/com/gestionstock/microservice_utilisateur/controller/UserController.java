@@ -26,10 +26,16 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(@ModelAttribute User user) {
-        userService.createUser(user);
-        return ResponseEntity.ok("User added successfully!"); // بازگشت به صفحه‌ی add-user با پیام موفقیت
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        try {
+            userService.createUser(user);
+            return ResponseEntity.ok("User added successfully!");
+        } catch (Exception e) {
+            e.printStackTrace(); // چاپ خطا برای دیباگ
+            return ResponseEntity.status(500).body("Failed to add user. Please try again.");
+        }
     }
+
 
     @GetMapping
     public List<User> getAllUsers() {
