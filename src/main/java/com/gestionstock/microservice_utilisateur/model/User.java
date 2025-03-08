@@ -28,7 +28,4 @@ public class User implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String email;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles; // (like USER, ADMIN)
 }

@@ -5,6 +5,8 @@ import com.gestionstock.microservice_utilisateur.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 
 @RestController
@@ -14,14 +16,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+
     @GetMapping("/test")
     public String test() {
         return "API is working!";
     }
-    // ایجاد کاربر جدید
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public String createUser(@ModelAttribute User user) {
+        userService.createUser(user);
+        return "add-user"; // بازگشت به صفحه‌ی add-user با پیام موفقیت
     }
 
     // دریافت تمام کاربران
@@ -39,10 +43,10 @@ public class UserController {
     }
 
     // به‌روزرسانی کاربر
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        return ResponseEntity.ok(userService.updateUser(id, userDetails));
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+//        return ResponseEntity.ok(userService.updateUser(id, userDetails));
+//    }
 
     // حذف کاربر
     @DeleteMapping("/{id}")

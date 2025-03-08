@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/test").permitAll() // اجازه‌ی دسترسی بدون احراز هویت
-                        .requestMatchers("/dashboard").hasRole("ADMIN") // فقط ADMIN می‌تونه به
+                        .requestMatchers("/dashboard", "/add-user").hasRole("ADMIN") // فقط ADMIN می‌تونه به
                         .anyRequest().authenticated() // بقیه درخواست‌ها نیاز به احراز هویت دارند
                 )
                 .formLogin(form -> form
