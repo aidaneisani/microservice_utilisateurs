@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Aa@123456789
+      MYSQL_DATABASE: usersDB
+    ports:
+      - "3307:3306"
+    networks:
+      - mynetwork
+
+  microservice_utilisateur:
+    build: .
+    container_name: microservice_utilisateur
+    image: aidaneisani/microservice_utilisateur:latest
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/usersDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Aa@123456789
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:

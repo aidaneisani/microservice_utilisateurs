@@ -15,32 +15,29 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // 🚨 CSRF رو غیرفعال کن تا `DELETE` کار کنه
+                .csrf(csrf -> csrf.disable())  // 🚨 Disable CSRF to allow `DELETE` requests
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/test").permitAll() // دسترسی عمومی به تست
-                        .requestMatchers("/dashboard", "/add-user").hasRole("ADMIN") // فقط ADMIN به داشبورد
-                        .requestMatchers("/api/users/**").hasRole("ADMIN") // 🚨 اضافه کردن دسترسی DELETE
-                        .anyRequest().authenticated() // سایر درخواست‌ها نیاز به احراز هویت دارند
+                        .requestMatchers("/api/users/test").permitAll() // Public access to test
+                        .requestMatchers("/dashboard", "/add-user").hasRole("ADMIN") // Only ADMIN can access the dashboard
+                        .requestMatchers("/api/users/**").hasRole("ADMIN") // 🚨 Add DELETE access control
+                        .anyRequest().authenticated() // Other requests require authentication
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard")
                         .permitAll()
                 );
-
         return http.build();
     }
-
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN") // 🚨 دقت کن که اینجا `ROLE_ADMIN` ست شده
+                .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(admin);
@@ -51,3 +48,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+
+
+

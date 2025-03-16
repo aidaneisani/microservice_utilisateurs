@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-utilisateur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-utilisateur
+  template:
+    metadata:
+      labels:
+        app: microservice-utilisateur
+    spec:
+      containers:
+        - name: microservice-utilisateur
+          image: aidaneisani/microservice_utilisateur:latest
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-service:3306/usersDB
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "Aa@123456789"
+          ports:
+            - containerPort: 8080
